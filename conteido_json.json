@@ -1,0 +1,24 @@
+array:4 [▼ // routes\web.php:80
+  "total" => 1
+  "numberOfElements" => 1
+  "maxElementsSize" => 1
+  "content" => array:1 [▼
+    0 => array:5 [▼
+      "numeroProcesso" => "0011632-42.2024.5.15.0033"
+      "nivelSigilo" => 0
+      "idCodexTribunal" => 0
+      "siglaTribunal" => "TRT15"
+      "tramitacoes" => array:1 [▼
+        0 => array:16 [▼
+          "idCodex" => 0
+          "dataHoraAjuizamento" => "2024-09-30T11:14:41.579"
+          "tribunal" => array:4 [▶]
+          "liminar" => false
+          "nivelSigilo" => 0
+          "valorAcao" => 10000.0
+          "dataHoraUltimaDistribuicao" => "2024-09-30T11:14:41.579"
+          "classe" => array:1 [▶]
+          "assunto" => array:1 [▶]
+          "movimentos" => array:58 [▶]
+          "ultimoMovimento" => array:2 [▼
+            "dataHora" => "2025-08-22T07:55:44.020864"

@@ -1,0 +1,93 @@
+name: evolution
+
+services:
+  evolution-api:
+    image: atendai/evolution-api:v2.1.1
+    container_name: evolution_api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "${EVOLUTION_PORT:-8080}:8080"
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # ── Servidor ───────────────────────────────────────────────
+      SERVER_URL: ${SERVER_URL:-http://localhost:8080}
+      AUTHENTICATION_API_KEY: ${AUTHENTICATION_API_KEY}
+
+      # ── Banco de dados (Postgres) ──────────────────────────────
+      DATABASE_ENABLED: "true"
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://${POSTGRES_USER:-evolution}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-evolution}?schema=public
+      DATABASE_CONNECTION_CLIENT_NAME: evolution_jusask
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+
+      # ── Cache (Redis) ──────────────────────────────────────────
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: redis://redis:6379/0
+      CACHE_REDIS_PREFIX_KEY: evolution
+      CACHE_REDIS_SAVE_INSTANCES: "true"
+      CACHE_LOCAL_ENABLED: "false"
+
+      # ── Webhook global (opcional; também dá para configurar por instância) ──
+      WEBHOOK_GLOBAL_ENABLED: ${WEBHOOK_GLOBAL_ENABLED:-false}
+      WEBHOOK_GLOBAL_URL: ${WEBHOOK_GLOBAL_URL:-}
+      WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS: "false"
+
+      # ── Logs / sessão ──────────────────────────────────────────
+      LOG_LEVEL: ERROR,WARN,INFO
+      LOG_COLOR: "true"
+      DEL_INSTANCE: "false"
+      QRCODE_LIMIT: "30"
+      LANGUAGE: pt-BR
+    volumes:
+      - evolution_instances:/evolution/instances
+    networks:
+      - evolution-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: evolution_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-evolution}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-evolution}
+    volumes:
+      - evolution_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-evolution} -d ${POSTGRES_DB:-evolution}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - evolution-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: evolution_redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - evolution_redis:/data
+    networks:
+      - evolution-net
+
+volumes:
+  evolution_instances:
+  evolution_pgdata:
+  evolution_redis:
+
+networks:
+  evolution-net:
+    driver: bridge

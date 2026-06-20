@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "jus-ask": {
+      "command": "php",
+      "args": ["artisan", "mcp:start", "jus-ask"]
+    }
+  }
+}

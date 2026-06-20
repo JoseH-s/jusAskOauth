@@ -1,0 +1,40 @@
+// ── Typography ────────────────────────────────────────────
+$font-family-sans-serif: 'DM Sans', sans-serif;
+$font-size-base:         0.9rem;
+$line-height-base:       1.6;
+
+// ── Colors ────────────────────────────────────────────────
+$primary:   #1a56db;
+$success:   #15803d;
+$danger:    #dc2626;
+$warning:   #d97706;
+$info:      #0891b2;
+$secondary: #5a6e84;
+
+// ── Body ──────────────────────────────────────────────────
+$body-bg:    #f0f4f8;
+$body-color: #1c2b3a;
+
+// ── Borders & Radius ──────────────────────────────────────
+$border-color:     #dce4ef;
+$border-radius:    .5rem;
+$border-radius-lg: .75rem;
+$border-radius-sm: .35rem;
+
+// ── Cards ─────────────────────────────────────────────────
+$card-border-color:  #dce4ef;
+$card-border-radius: .65rem;
+$card-cap-bg:        transparent;
+
+// ── Inputs ────────────────────────────────────────────────
+$input-border-color:       #dce4ef;
+$input-focus-border-color: #1a56db;
+$input-focus-box-shadow:   0 0 0 3px rgba(26,86,219,.14);
+$input-placeholder-color:  #8fa3b8;
+
+// ── Tables ────────────────────────────────────────────────
+$table-border-color: #dce4ef;
+
+// ── Modals ────────────────────────────────────────────────
+$modal-content-border-radius: .75rem;
+$modal-backdrop-opacity:      .6;
